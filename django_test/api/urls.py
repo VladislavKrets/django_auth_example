@@ -22,4 +22,5 @@ urlpatterns = [
     path('auth/', views.auth),
     path('me/', views.getUser.as_view()),
     path('group_register/', views.registerGroup.as_view()),
+    path('home_register/', views.registerHome.as_view()),
 ]

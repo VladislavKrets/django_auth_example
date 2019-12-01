@@ -43,6 +43,11 @@ class FullVKGroupSerializer(serializers.ModelSerializer):
         model = models.VKGroup
         fields = '__all__'
 
+class AddVKHomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Home
+        fields = ('group_id', 'address', 'flats_count', 'space')
+
 
 class FullVKHomeSerializer(serializers.ModelSerializer):
     class Meta:

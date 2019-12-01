@@ -10,6 +10,30 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
+class registerHome(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = request.META.get('HTTP_AUTHORIZATION').split(" ")[1]
+        # token get or none
+        token = Token.objects.get(key=token)
+        user = token.user
+        if user.expandeduser.is_admin:
+            serialized = serializers.AddVKHomeSerializer(data=request.data)
+            if serialized.is_valid():
+
+                serialized.validated_data['user_id'] = user
+                group = serialized.save()
+                serialized = serializers.FullVKHomeSerializer(group)
+                return Response(serialized.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status.HTTP_403_FORBIDDEN)
+
+#register group
 class registerGroup(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -30,7 +54,7 @@ class registerGroup(APIView):
             return Response(status.HTTP_403_FORBIDDEN)
 
 
-
+#get user
 class getUser(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
