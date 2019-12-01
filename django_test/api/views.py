@@ -50,8 +50,8 @@ class registerGroup(APIView):
             group = models.VKGroup.objects.filter(vk_id=serialized.validated_data['vk_id'])
             if not group:
                 group = models.VKGroup.objects.get_or_create(user_id=user, vk_id=serialized.validated_data['vk_id'])
-                user.expandedUser.is_admin = True
-                user.save()
+                user.expandeduser.is_admin = True
+                user.expandeduser.save()
                 return Response(serialized.validated_data, status=status.HTTP_201_CREATED)
             else:
                 return Response(status = status.HTTP_400_FORBIDDEN)
